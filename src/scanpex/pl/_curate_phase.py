@@ -2,10 +2,10 @@ import anndata as ad
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from scanpex.tl import currate_phase as cp
+from scanpex.tl import curate_phase as cp
 
 
-def currate_phase(
+def curate_phase(
     adata: ad.AnnData,
     thresh: float,
     ax: plt.Axes,
