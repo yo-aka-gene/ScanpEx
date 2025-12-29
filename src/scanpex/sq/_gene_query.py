@@ -1,6 +1,5 @@
 from typing import List
 
-import mygene
 import numpy as np
 import pandas as pd
 
@@ -12,6 +11,12 @@ def gene_query(
     logging: bool = True,
     unique: bool = True,
 ) -> List[str]:
+    try:
+        import mygene
+    except ImportError:
+        raise ImportError(
+            "mygene is not installed. Please install it using `pip install mygene`."
+        )
     mg = mygene.MyGeneInfo()
     res = mg.querymany(
         gene_names,
