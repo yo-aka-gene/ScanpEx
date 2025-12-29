@@ -5,11 +5,8 @@ import scanpy as sc
 
 
 def scrublet(
-    adata: ad.AnnData,
-    remove: bool = False,
-    update: bool = False,
-    **kwargs
-)-> Optional[ad.AnnData]:
+    adata: ad.AnnData, remove: bool = False, update: bool = False, **kwargs
+) -> Optional[ad.AnnData]:
     if ("predicted_doublet" not in adata.obs.columns) or update:
         sc.pp.scrublet(adata, **kwargs)
 

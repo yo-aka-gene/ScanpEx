@@ -6,17 +6,9 @@ import scanpy as sc
 from scipy.stats import zscore
 
 
-def prob_genes(
-    adata: ad.AnnData,
-    gene_list: list,
-    **kwargs
-) -> Union[None, ad.AnnData]:
+def prob_genes(adata: ad.AnnData, gene_list: list, **kwargs) -> Union[None, ad.AnnData]:
     score_name = kwargs.get("score_name", "score")
-    result = sc.tl.score_genes(
-        adata=adata, 
-        gene_list=gene_list,
-        **kwargs
-    )
+    result = sc.tl.score_genes(adata=adata, gene_list=gene_list, **kwargs)
 
     sigmoid = lambda s: 1 / (1 + np.exp(-zscore(s, nan_policy="omit")))
 
@@ -27,39 +19,21 @@ def prob_genes(
 
 
 def score_genes_cell_cycle(
-    adata: ad.AnnData,
-    s_genes: list,
-    g2m_genes: list,
-    **kwargs
+    adata: ad.AnnData, s_genes: list, g2m_genes: list, **kwargs
 ) -> None:
     prob_genes(
-        adata=adata, 
-        gene_list=s_genes, 
-        score_name='S_score', 
-        copy=False,
-        **kwargs
+        adata=adata, gene_list=s_genes, score_name="S_score", copy=False, **kwargs
     )
     prob_genes(
-        adata=adata, 
-        gene_list=g2m_genes, 
-        score_name='G2M_score', 
-        copy=False,
-        **kwargs
+        adata=adata, gene_list=g2m_genes, score_name="G2M_score", copy=False, **kwargs
     )
     sc.tl.score_genes_cell_cycle(
-        adata=adata,
-        s_genes=s_genes, 
-        g2m_genes=g2m_genes,
-        copy=False,
-        **kwargs
+        adata=adata, s_genes=s_genes, g2m_genes=g2m_genes, copy=False, **kwargs
     )
     adata.obs["phase"] = adata.obs["phase"].map(lambda p: p if p != "G2M" else "G2/M")
 
 
-def currate_phase(
-        adata: ad.AnnData, 
-        thresh: float = 0
-    ) -> None:
+def currate_phase(adata: ad.AnnData, thresh: float = 0) -> None:
     s_phase = adata.obs["S_score"].map(lambda s: 10 if s >= thresh else 0)
     g2m_phase = adata.obs["G2M_score"].map(lambda s: 100 if s >= thresh else 0)
     g2m_is_larger = (adata.obs["G2M_score"] - adata.obs["S_score"]).map(

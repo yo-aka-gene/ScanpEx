@@ -8,20 +8,20 @@ def gene_query(
     source: list,
     species: str = "human",
     logging: bool = True,
-    unique: bool = True
+    unique: bool = True,
 ) -> dict:
     mg = mygene.MyGeneInfo()
     res = mg.querymany(
-        gene_names, 
-        scopes="symbol,alias", 
-        fields="symbol,alias", 
+        gene_names,
+        scopes="symbol,alias",
+        fields="symbol,alias",
         species="human",
-        as_dataframe=True
+        as_dataframe=True,
     )
 
     source_set = set(source)
     final_genes = []
-    
+
     found_count = 0
 
     for query in np.unique(gene_names):
@@ -29,14 +29,14 @@ def gene_query(
             continue
 
         match_rows = res.loc[[query]]
-        
+
         candidates = []
-        
+
         for _, row in match_rows.iterrows():
-            if not pd.isna(row.get('symbol')):
-                candidates.append(row['symbol'])
-            
-            aliases = row.get('alias')
+            if not pd.isna(row.get("symbol")):
+                candidates.append(row["symbol"])
+
+            aliases = row.get("alias")
             if isinstance(aliases, list):
                 candidates.extend(aliases)
             elif isinstance(aliases, str):
@@ -45,7 +45,7 @@ def gene_query(
             candidates.append(query)
 
         candidates = list(set(candidates))
-        
+
         match_found = False
         for cand in candidates:
             if cand in source_set:
@@ -53,15 +53,19 @@ def gene_query(
                 match_found = True
                 found_count += 1
                 break
-        
+
         if not match_found:
             if logging:
                 print(f"Not found in source: {query} (Candidates: {candidates})")
             pass
 
     if logging:
-        print(f"[{found_count}/{len(np.unique(gene_names))}] queries mapped to the source.")
+        print(
+            f"[{found_count}/{len(np.unique(gene_names))}] queries mapped to the source."
+        )
         if unique:
-             print(f" -> Returning {len(set(final_genes))} unique genes present in data.")
+            print(
+                f" -> Returning {len(set(final_genes))} unique genes present in data."
+            )
 
     return sorted(list(set(final_genes))) if unique else final_genes

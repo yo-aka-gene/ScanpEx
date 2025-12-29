@@ -19,8 +19,12 @@ def scrublet(
     palette = kwargs.pop("palette", {False: "lightgrey", True: "tab:red"})
 
     sc.pl.scatter(
-        adata[order], x=x, y=y, 
-        color="predicted_doublet", show=False, ax=ax,
+        adata[order],
+        x=x,
+        y=y,
+        color="predicted_doublet",
+        show=False,
+        ax=ax,
         palette=palette,
         **kwargs
     )

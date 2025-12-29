@@ -12,5 +12,5 @@ __all__ = [
     currate_phase,
     scrublet,
     gene_list,
-    subplots
+    subplots,
 ]
