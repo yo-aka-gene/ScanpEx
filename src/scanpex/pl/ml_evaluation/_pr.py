@@ -1,5 +1,5 @@
 import numpy as np
-from sklearn.metrics import precision_recall_curve, average_precision_score
+from sklearn.metrics import average_precision_score, precision_recall_curve
 
 
 class MulticlassPR:

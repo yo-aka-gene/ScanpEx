@@ -1,6 +1,8 @@
-from typing import Tuple, Optional, Union, List
-import numpy as np
+from typing import List, Optional, Tuple, Union
+
 import matplotlib.pyplot as plt
+import numpy as np
+
 
 def subplots(
     nrows: Optional[int] = None,

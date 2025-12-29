@@ -1,5 +1,7 @@
-from typing import Optional, Dict, Tuple, Union
+from typing import Dict, Optional, Tuple, Union
+
 import seaborn as sns
+
 from .. import ft
 
 

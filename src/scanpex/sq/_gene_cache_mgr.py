@@ -1,6 +1,6 @@
-import os
 import json
-from typing import List, Callable, Dict, Any
+import os
+from typing import Any, Callable, Dict, List
 
 
 class GeneCacheManager:

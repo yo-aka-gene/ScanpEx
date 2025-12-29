@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import scanpy as sc
 
-
 sc.set_figure_params(scanpy=False, vector_friendly=True, dpi_save=600)
 
 

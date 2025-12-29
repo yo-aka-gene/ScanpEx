@@ -1,8 +1,7 @@
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
-
+from matplotlib.colors import LinearSegmentedColormap
 
 mpl.rcParams.update({
     "pdf.fonttype": 42,

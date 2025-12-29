@@ -1,4 +1,4 @@
-from typing import Any, Tuple, List
+from typing import Any, List, Tuple
 
 
 def xor(list_a: List[Any], list_b: List[Any]) -> Tuple[List[Any], List[Any]]:
