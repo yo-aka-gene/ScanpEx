@@ -1,3 +1,5 @@
+from typing import List
+
 import mygene
 import numpy as np
 import pandas as pd
@@ -9,13 +11,13 @@ def gene_query(
     species: str = "human",
     logging: bool = True,
     unique: bool = True,
-) -> dict:
+) -> List[str]:
     mg = mygene.MyGeneInfo()
     res = mg.querymany(
         gene_names,
         scopes="symbol,alias",
         fields="symbol,alias",
-        species="human",
+        species=species,
         as_dataframe=True,
     )
 
