@@ -60,9 +60,8 @@ def gene_query(
             pass
 
     if logging:
-        print(
-            f"[{found_count}/{len(np.unique(gene_names))}] queries mapped to the source."
-        )
+        n_total = len(np.unique(gene_names))
+        print(f"[{found_count}/{n_total}] queries mapped to the source.")
         if unique:
             print(
                 f" -> Returning {len(set(final_genes))} unique genes present in data."

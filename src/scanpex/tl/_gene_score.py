@@ -6,11 +6,13 @@ import scanpy as sc
 from scipy.stats import zscore
 
 
+def sigmoid(x: float) -> float:
+    return 1 / (1 + np.exp(-zscore(x, nan_policy="omit")))
+
+
 def prob_genes(adata: ad.AnnData, gene_list: list, **kwargs) -> Union[None, ad.AnnData]:
     score_name = kwargs.get("score_name", "score")
     result = sc.tl.score_genes(adata=adata, gene_list=gene_list, **kwargs)
-
-    sigmoid = lambda s: 1 / (1 + np.exp(-zscore(s, nan_policy="omit")))
 
     data = result if result is not None else adata
     data.obs[f"{score_name}_prob"] = sigmoid(data.obs[score_name])

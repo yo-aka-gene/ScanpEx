@@ -1,3 +1,5 @@
+from typing import Tuple
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -66,7 +68,8 @@ def level_cmap(
 seurat = level_cmap(name="seurat")
 
 
-rgba2gray = lambda r, g, b, a: a * (0.299 * r + 0.578 * g + 0.114 * b)
+def rgba2gray(r: float, g: float, b: float, a: float) -> Tuple[float]:
+    return a * (0.299 * r + 0.578 * g + 0.114 * b)
 
 
 def textcolor(c, thresh=0.4, dark=".2", light="1") -> str:

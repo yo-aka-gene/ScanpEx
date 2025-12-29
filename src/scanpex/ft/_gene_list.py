@@ -24,7 +24,7 @@ class GeneList:
     ):
         assert (database is not None) or (
             gene_names is not None
-        ), f"Assign at least either database or gene_names"
+        ), "Assign at least either database or gene_names"
         self.name2idx = {n: i for n, i in zip(adata.var[source_key], adata.var.index)}
         self.idx2name = {i: n for n, i in self.name2idx.items()}
         gene_names = gene_names if gene_names is not None else database[category]
