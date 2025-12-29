@@ -55,7 +55,7 @@ def seacells(
         import SEACells
     except ImportError:
         raise ImportError(
-            "SEACells is not installed. Please run `poetry add SEACells`."
+            "SEACells is not installed. Please install it using `pip install SEACells`."
         )
 
     if seacell_size is not None:
