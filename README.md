@@ -5,6 +5,6 @@
 ScanPy Extension and kwarg Preferences
 
 ## Documentation
-<img src="https://raw.githubusercontent.com/yo-aka-gene/ScanpEx/main/docs/_static/scanpex_logo_large.png"> 
+<img src="https://raw.githubusercontent.com/yo-aka-gene/ScanpEx/main/docs/_static/scanpex_title.png"> 
 
 ## Installation
