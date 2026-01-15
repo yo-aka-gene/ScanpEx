@@ -50,7 +50,7 @@ def gene_list(
         By default (1, 0.4, 0.025, 0.2).
     cbar_kws : dict, optional
         Keyword arguments for the colorbar. If None, automatically sets the
-        label to "rho" or "|rho|".
+        label to ``rho`` or ``|rho|``.
     dendrogram_ratio : float or tuple of float, optional
         Proportion of the figure size devoted to the dendrograms.
         By default 0.1.
