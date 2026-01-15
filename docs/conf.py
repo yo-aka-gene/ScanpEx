@@ -6,11 +6,20 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-import glob
 import os
 import sys
 
 sys.path.insert(0, os.path.abspath("../src"))
+
+# -----------------------------------------------------------------------------
+# 1. Load pyproject.toml to get Version and Dependencies
+# -----------------------------------------------------------------------------
+try:
+    # Python 3.11+ standard library
+    import tomllib
+except ImportError:
+    # Python 3.10 or lower (requires `pip install tomli`)
+    import tomli as tomllib
 
 pyproject_path = os.path.abspath("../pyproject.toml")
 pyproject_data = {}
