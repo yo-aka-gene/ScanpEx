@@ -7,7 +7,7 @@ from .. import ft
 
 def gene_list(
     gl: ft.GeneList,
-    group_key: Optional[str] = "SEACells",
+    group_key: Optional[str] = "leiden",
     method: str = "pearson",
     abs_corr: bool = False,
     use_gene_names: bool = True,
