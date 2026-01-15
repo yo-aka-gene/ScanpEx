@@ -1,9 +1,9 @@
 <img src="https://raw.githubusercontent.com/yo-aka-gene/ScanpEx/main/docs/_static/scanpex_title.png"> 
-[![Documentation Status](https://readthedocs.org/projects/scanpex/badge/?version=latest)](https://scanpex.readthedocs.io/en/latest/?badge=latest)
-[<img src="https://img.shields.io/badge/Documentation-scanpex.rtfd.io-8CA1AF?style=flat&logo=readthedocs">](https://scanpex.readthedocs.io/en/latest/)
 
 # ScanpEx
 [<img src="https://img.shields.io/badge/GitHub-yo--aka--gene/ScanpEx-181717?style=flat&logo=github">](https://github.com/yo-aka-gene/ScanpEx)
+[![Documentation Status](https://readthedocs.org/projects/scanpex/badge/?version=latest)](https://scanpex.readthedocs.io/en/latest/?badge=latest)
+[<img src="https://img.shields.io/badge/Documentation-scanpex.rtfd.io-8CA1AF?style=flat&logo=readthedocs">](https://scanpex.readthedocs.io/en/latest/)
 
 
 - ScanPy Extension and kwarg Preferences
