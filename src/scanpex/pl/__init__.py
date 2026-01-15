@@ -6,11 +6,11 @@ from ._subplots import subplots
 from ._umap import umap
 
 __all__ = [
-    ml_evaluation,
-    preferences,
-    umap,
-    curate_phase,
-    scrublet,
-    gene_list,
-    subplots,
+    "ml_evaluation",
+    "preferences",
+    "umap",
+    "curate_phase",
+    "scrublet",
+    "gene_list",
+    "subplots",
 ]
