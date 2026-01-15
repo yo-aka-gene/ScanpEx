@@ -6,6 +6,36 @@ sc.set_figure_params(scanpy=False, vector_friendly=True, dpi_save=600)
 
 
 def umap(adata, title: str = None, **kwargs):
+    """
+    Generate a UMAP plot with customized aesthetics and legend placement.
+
+    This function wraps `scanpy.pl.umap` to provide a cleaner look by removing
+    axis spines/ticks, enforcing an equal aspect ratio, and positioning the
+    legend (for categorical data) or colorbar (for continuous data) outside
+    the plotting area.
+
+    Parameters
+    ----------
+    adata : ad.AnnData
+        The annotated data matrix containing UMAP coordinates.
+    title : str, optional
+        The title to display for the legend or colorbar. If None, the
+        capitalized name of the `color` column is used. By default None.
+    **kwargs
+        Additional keyword arguments passed to `scanpy.pl.umap`.
+        Notable arguments handled specifically by this wrapper:
+
+        - ``color`` (str): Key in `adata.obs` to color observations by.
+        - ``ax`` (matplotlib.axes.Axes): The axis to plot on. If not provided,
+          a new figure and axis are created.
+
+    Returns
+    -------
+    (matplotlib.figure.Figure, matplotlib.axes.Axes) or None
+        Returns a tuple of `(fig, ax)` if a new figure was created (i.e., `ax`
+        was not provided in kwargs).
+        Returns `None` if an existing `ax` was passed (modifies the axis in-place).
+    """
     ax = kwargs.get("ax", None)
     create_new_ax = True if ax is None else False
     if ax is None:
