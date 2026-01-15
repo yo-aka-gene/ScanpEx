@@ -34,6 +34,7 @@ sphinx-gallery = "^0.20.0"
 sphinx-rtd-theme = "^3.1.0"
 pandoc = "^2.4"
 watchdog = "^6.0.0"
+myst-parser = "<5.0.0"
 
 [build-system]
 requires = ["poetry-core"]
