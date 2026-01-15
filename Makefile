@@ -49,7 +49,7 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr .pytest_cache
 
 test: ## run tests quickly with the default Python
-	poetry run pytest --doctest-modules src/scanpex/* tests/*
+	poetry run pytest --doctest-modules src/scanpex/ tests/
 
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
@@ -68,7 +68,7 @@ synclib: ## initiate automated sync dependencies
 	python synclib.py
 
 build: clean ## build the package
-    poetry build
+	poetry build
 
 version-check: build ## build check with twine
 	poetry run twine check dist/*
@@ -78,6 +78,6 @@ tag: ## create tags
 	@echo "Creating git tag: $(TAG)"
 	git tag $(TAG)
 
-release: clean-test test tag ## release curreant version
+release: clean-test test tag ## release current version
 	@echo "Pushing tag $(TAG) to origin..."
 	git push origin $(TAG)
