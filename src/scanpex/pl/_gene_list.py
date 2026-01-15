@@ -50,7 +50,7 @@ def gene_list(
         By default (1, 0.4, 0.025, 0.2).
     cbar_kws : dict, optional
         Keyword arguments for the colorbar. If None, automatically sets the
-        label to $\rho$ or $|\rho|$.
+        label to "rho" or "|rho|".
     dendrogram_ratio : float or tuple of float, optional
         Proportion of the figure size devoted to the dendrograms.
         By default 0.1.
@@ -59,14 +59,13 @@ def gene_list(
     rasterized : bool, optional
         If True, rasterizes the heatmap mesh to reduce file size when saving
         as vector graphics (PDF/SVG). By default True.
-    **kwargs
+    kwargs : dict
         Additional keyword arguments passed to `seaborn.clustermap`.
 
     Returns
     -------
     seaborn.matrix.ClusterGrid
-        The ClusterGrid object returned by `seaborn.clustermap`, providing access
-        to the figure, axes, and dendrogram data.
+        The ClusterGrid object returned by `seaborn.clustermap`.
     """
     data = gl._get_aggregated_df(group_key=group_key, score_name="")
     data = data.drop(columns=["score"]) if "score" in data.columns else data

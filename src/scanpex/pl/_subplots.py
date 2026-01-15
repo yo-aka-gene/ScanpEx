@@ -32,10 +32,12 @@ def subplots(
         it may be calculated automatically.
     n : int, optional
         Total number of subplots required.
+
         - If `nrows` and `ncols` are None, the grid is calculated to be nearly
           square (controlled by `vertical`).
         - If only one of `nrows` or `ncols` is provided, the other is calculated
           to accommodate `n` plots.
+
     base : tuple of float, optional
         The width and height of a single subplot (width, height).
         Used to calculate `figsize` if it is not explicitly provided.

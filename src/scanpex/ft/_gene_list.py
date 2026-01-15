@@ -197,6 +197,7 @@ class GeneList:
         Select a subset of genes that independently predict the module score.
 
         This method uses a two-step process:
+
         1. LassoCV to determine the optimal regularization parameter (alpha).
         2. Recursive Feature Elimination (RFE) with Lasso to select the
            top `n_top` features.
