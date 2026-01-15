@@ -25,7 +25,7 @@ def gene_list(
     if cbar_kws is None:
         cbar_kws = {"label": r"$|\rho|$" if abs_corr else r"$\rho$"}
 
-    sns.clustermap(
+    return sns.clustermap(
         data.corr(method=method).abs() if abs_corr else data.corr(method=method),
         xticklabels=ticklabels,
         yticklabels=ticklabels,
