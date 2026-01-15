@@ -1,4 +1,4 @@
-.PHONY: clean clean-build clean-pyc clean-test test help docs deps
+.PHONY: clean clean-build clean-pyc clean-test test help docs deps build version-check tag release
 .DEFAULT_GOAL := help
 
 define BROWSER_PYSCRIPT
@@ -22,6 +22,10 @@ endef
 export PRINT_HELP_PYSCRIPT
 
 BROWSER := python -c "$$BROWSER_PYSCRIPT"
+
+VERSION := $(shell poetry version -s)
+TAG := v$(VERSION)
+
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
@@ -62,3 +66,18 @@ deps: ## export dependencies
 
 synclib: ## initiate automated sync dependencies
 	python synclib.py
+
+build: clean ## build the package
+    poetry build
+
+version-check: build ## build check with twine
+	poetry run twine check dist/*
+
+tag: ## create tags
+	@echo "Current version is $(VERSION)"
+	@echo "Creating git tag: $(TAG)"
+	git tag $(TAG)
+
+release: clean-test test tag ## release curreant version
+	@echo "Pushing tag $(TAG) to origin..."
+	git push origin $(TAG)
