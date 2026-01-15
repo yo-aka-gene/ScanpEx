@@ -36,6 +36,7 @@ pandoc = "^2.4"
 watchdog = "^6.0.0"
 myst-parser = "<5.0.0"
 twine = "^6.2.0"
+tomli = "^2.4.0"
 
 [build-system]
 requires = ["poetry-core"]

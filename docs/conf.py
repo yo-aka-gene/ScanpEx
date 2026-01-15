@@ -103,3 +103,47 @@ source_suffix = {
 }
 
 autodoc_typehints = "description"
+
+# -----------------------------------------------------------------------------
+# Auto-generate autodoc_mock_imports from pyproject.toml
+# -----------------------------------------------------------------------------
+try:
+    # Python 3.11+ standard library
+    import tomllib
+except ImportError:
+    # Python 3.10 or lower (requires `pip install tomli`)
+    import tomli as tomllib
+
+
+def get_mock_imports():
+    pyproject_path = os.path.abspath("../pyproject.toml")
+
+    if not os.path.exists(pyproject_path):
+        return []
+
+    with open(pyproject_path, "rb") as f:
+        data = tomllib.load(f)
+
+    dependencies = data.get("tool", {}).get("poetry", {}).get("dependencies", {}).keys()
+
+    exclude = {"python"}
+
+    package_map = {
+        "scikit-learn": "sklearn",
+        "biopython": "Bio",
+        "opencv-python": "cv2",
+        "pillow": "PIL",
+        "pyyaml": "yaml",
+    }
+
+    mocks = []
+    for pkg in dependencies:
+        if pkg in exclude:
+            continue
+        import_name = package_map.get(pkg, pkg)
+        mocks.append(import_name)
+
+    return mocks
+
+
+autodoc_mock_imports = get_mock_imports()
