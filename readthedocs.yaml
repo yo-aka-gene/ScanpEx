@@ -29,5 +29,4 @@ python:
   install:
   - method: poetry
     path: .
-    groups:
-      - dev
+    groups: [dev]
