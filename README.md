@@ -5,6 +5,7 @@
 [![Documentation Status](https://readthedocs.org/projects/scanpex/badge/?version=latest)](https://scanpex.readthedocs.io/en/latest/?badge=latest)
 [<img src="https://img.shields.io/badge/Documentation-scanpex.rtfd.io-8CA1AF?style=flat&logo=readthedocs">](https://scanpex.readthedocs.io/en/latest/)
 <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat&logo=python">
+[![PyPi](https://img.shields.io/pypi/v/scanpex?logo=pypi&label=PyPI&color=3775A9)](https://pypi.org/project/scanpex)
 
 - ScanPy Extension and kwarg Preferences
 - Most codes were initially employed in ["Design-of-Experiments for Nonlinear, Multivariate Biology: Rethinking Experimental Design through Perturb-seq"](https://www.biorxiv.org/content/10.64898/2025.12.28.696309v2)
