@@ -11,53 +11,31 @@ import sys
 
 sys.path.insert(0, os.path.abspath("../src"))
 
-# -----------------------------------------------------------------------------
-# 1. Load pyproject.toml to get Version and Dependencies
-# -----------------------------------------------------------------------------
-try:
-    # Python 3.11+ standard library
-    import tomllib
-except ImportError:
-    # Python 3.10 or lower (requires `pip install tomli`)
-    import tomli as tomllib
+autodoc_mock_imports = [
+    "numba",
+    "matplotlib",
+    "pandas",
+    "scanpy",
+    "anndata",
+    "scipy",
+    "mygene",
+    "sklearn",
+    "seaborn",
+    "jax",
+    "jaxlib",
+    "seacells",
+    "fastcluster",
+]
 
-pyproject_path = os.path.abspath("../pyproject.toml")
-pyproject_data = {}
-
-if os.path.exists(pyproject_path):
-    with open(pyproject_path, "rb") as f:
-        pyproject_data = tomllib.load(f)
-
-poetry_tool = pyproject_data.get("tool", {}).get("poetry", {})
-
+# -- Project information -----------------------------------------------------
 
 project = "ScanpEx"
 copyright = "2026, Yuji Okano"
 author = "Yuji Okano"
-version = poetry_tool.get("version", "0.1.0")
+version = "0.1.0"
 release = version
 
-dependencies = poetry_tool.get("dependencies", {}).keys()
-
-exclude = {"python"}
-
-package_map = {
-    "scikit-learn": "sklearn",
-    "biopython": "Bio",
-    "opencv-python": "cv2",
-    "pillow": "PIL",
-    "pyyaml": "yaml",
-    "scikit-image": "skimage",
-}
-
-mocks = []
-for pkg in dependencies:
-    if pkg in exclude:
-        continue
-    import_name = package_map.get(pkg, pkg)
-    mocks.append(import_name)
-
-autodoc_mock_imports = mocks
+# ----------------------------------------------------------------------------
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
