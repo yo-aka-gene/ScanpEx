@@ -18,7 +18,7 @@ Visit [https://scanpex.readthedocs.io/en/latest/](https://scanpex.readthedocs.io
 
 ## Installation
 ```
-pip install git+https://github.com/yo-aka-gene/ScanpEx.git
+pip install scanpex
 ```
 
 ## Citation
