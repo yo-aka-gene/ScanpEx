@@ -57,8 +57,8 @@ help:
 docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/modules.rst
 	poetry run sphinx-apidoc -o docs/ src/scanpex
-	$(MAKE) -C docs clean
-	$(MAKE) -C docs html
+	poetry run $(MAKE) -C docs clean
+	poetry run $(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html
 
 # deps: ## export dependencies

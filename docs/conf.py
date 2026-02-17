@@ -142,3 +142,5 @@ source_suffix = {
 }
 
 autodoc_typehints = "description"
+
+autoclass_content = "both"
