@@ -7,7 +7,9 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 import os
+import re
 import sys
+from pathlib import Path
 
 sys.path.insert(0, os.path.abspath("../src"))
 
@@ -30,11 +32,24 @@ autodoc_mock_imports = [
 
 # -- Project information -----------------------------------------------------
 
+pyproject_path = Path(__file__).parent.parent / "pyproject.toml"
+
+
+def get_version():
+    """pyproject.toml から version = "..." の行を探して数字を返す"""
+    if pyproject_path.exists():
+        content = pyproject_path.read_text()
+        match = re.search(r'^version = "(.+)"', content, re.MULTILINE)
+        if match:
+            return match.group(1)
+    return "0.1.0"
+
+
 project = "ScanpEx"
 copyright = "2026, Yuji Okano"
 author = "Yuji Okano"
-version = "0.1.0"
-release = version
+release = get_version()
+version = ".".join(release.split(".")[:2])
 
 # ----------------------------------------------------------------------------
 
