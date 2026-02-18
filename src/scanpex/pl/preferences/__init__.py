@@ -28,9 +28,7 @@ kwarg_save_transparent_fig = {
 
 
 def level_cmap(
-    color: tuple = tuple(
-        (3 * np.array(plt.cm.Purples(0.6)) + 2.5 * np.array([0, 0, 1, 1])) / 5
-    ),
+    color: tuple = None,
     grayscale: float = 0.2,
     gamma: float = 2,
     name: str = None,
@@ -45,7 +43,7 @@ def level_cmap(
     ----------
     color : tuple of float, optional
         The target RGBA color to transition to.
-        Defaults to a specific purple-blue blend.
+        By default None, assigning a specific purple-blue blend.
     grayscale : float, optional
         The intensity of the starting grey color (passed to `plt.cm.Greys`).
         0.0 is black, 1.0 is white. By default 0.2.
@@ -60,6 +58,12 @@ def level_cmap(
     matplotlib.colors.LinearSegmentedColormap
         The generated colormap object.
     """
+    color = (
+        tuple((3 * np.array(plt.cm.Purples(0.6)) + 2.5 * np.array([0, 0, 1, 1])) / 5)
+        if color is None
+        else color
+    )
+
     cdict = {
         "red": [
             (x, y0, y1)
