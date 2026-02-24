@@ -11,6 +11,7 @@ Subpackages
    scanpex.ml
    scanpex.pl
    scanpex.pp
+   scanpex.sns
    scanpex.sq
    scanpex.tl
 
