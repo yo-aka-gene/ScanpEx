@@ -5,13 +5,14 @@ try:
 except PackageNotFoundError:
     __version__ = "unknown"
 
-from . import ft, ml, pl, pp, sq, tl
+from . import ft, ml, pl, pp, sns, sq, tl
 
 __all__ = [
     "ft",
     "ml",
     "pl",
     "pp",
+    "sns",
     "sq",
     "tl",
 ]
