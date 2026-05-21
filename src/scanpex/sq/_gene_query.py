@@ -10,6 +10,8 @@ def gene_query(
     species: str = "human",
     logging: bool = True,
     unique: bool = True,
+    sort: bool = False,
+    keep_unmapped: bool = False,
 ) -> List[str]:
     """
     Map gene names (symbols or aliases) to a target source list (e.g., `adata.var_names`).
@@ -31,7 +33,12 @@ def gene_query(
         If True, prints the number of mapped genes and missing queries.
     unique : bool, optional (default: True)
         If True, returns a sorted list of unique gene names.
-        If False, allows duplicates in the output (order corresponds to discovery).
+        If False, allows duplicates and maintains the original query order.
+    sort : bool, optional (default: False)
+        If True, sorts the returned list of genes alphanumerically.
+    keep_unmapped : bool, optional (default: False)
+        If True, includes unmapped gene names in the returned list.
+        If False, omits unmapped genes.
 
     Returns
     -------
@@ -49,46 +56,44 @@ def gene_query(
         raise ImportError(
             "mygene is not installed. Please install it using `pip install mygene`."
         )
+
     mg = mygene.MyGeneInfo()
     res = mg.querymany(
         gene_names,
-        scopes="symbol,alias",
+        scopes="symbol,alias,ensembl.gene",
         fields="symbol,alias",
         species=species,
         as_dataframe=True,
     )
 
     source_set = set(source)
-    final_genes = []
-
+    mapping_dict = {}
     found_count = 0
 
     for query in np.unique(gene_names):
         if query not in res.index:
+            mapping_dict[query] = query if keep_unmapped else None
             continue
 
         match_rows = res.loc[[query]]
-
         candidates = []
 
         for _, row in match_rows.iterrows():
             if not pd.isna(row.get("symbol")):
                 candidates.append(row["symbol"])
-
             aliases = row.get("alias")
             if isinstance(aliases, list):
                 candidates.extend(aliases)
             elif isinstance(aliases, str):
                 candidates.append(aliases)
-
             candidates.append(query)
 
         candidates = list(set(candidates))
-
         match_found = False
+
         for cand in candidates:
             if cand in source_set:
-                final_genes.append(cand)
+                mapping_dict[query] = cand
                 match_found = True
                 found_count += 1
                 break
@@ -96,14 +101,20 @@ def gene_query(
         if not match_found:
             if logging:
                 print(f"Not found in source: {query} (Candidates: {candidates})")
-            pass
+            mapping_dict[query] = query if keep_unmapped else None
 
     if logging:
         n_total = len(np.unique(gene_names))
         print(f"[{found_count}/{n_total}] queries mapped to the source.")
-        if unique:
-            print(
-                f" -> Returning {len(set(final_genes))} unique genes present in data."
-            )
 
-    return sorted(list(set(final_genes))) if unique else final_genes
+    if unique:
+        final_genes = list(set([v for v in mapping_dict.values() if v is not None]))
+        return sorted(final_genes) if sort else final_genes
+
+    else:
+        final_genes = [
+            mapping_dict[query]
+            for query in gene_names
+            if mapping_dict[query] is not None
+        ]
+        return sorted(final_genes) if sort else final_genes
