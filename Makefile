@@ -1,4 +1,4 @@
-.PHONY: clean clean-build clean-pyc clean-test test help docs build version-check tag release
+.PHONY: clean clean-build clean-pyc clean-test test help docs build version-check tag release patch minor major
 .DEFAULT_GOAL := help
 
 define BROWSER_PYSCRIPT
@@ -29,6 +29,7 @@ TAG := v$(VERSION)
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
+
 clean-build: ## remove build artifacts
 	rm -fr build/
 	rm -fr dist/
@@ -36,11 +37,13 @@ clean-build: ## remove build artifacts
 	find . -name '*.egg-info' -exec rm -fr {} +
 	find . -name '*.egg' -exec rm -f {} +
 
+
 clean-pyc: ## remove Python file artifacts
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
 	find . -name '*~' -exec rm -f {} +
 	find . -name '__pycache__' -exec rm -fr {} +
+
 
 clean-test: ## remove test and coverage artifacts
 # 	rm -fr .tox/
@@ -48,11 +51,14 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr htmlcov/
 	rm -fr .pytest_cache
 
+
 test: ## run tests quickly with the default Python
 	poetry run pytest --doctest-modules src/scanpex/ tests/
 
+
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
+
 
 docs: ## generate Sphinx HTML documentation, including API docs
 	rm -f docs/modules.rst
@@ -64,20 +70,61 @@ docs: ## generate Sphinx HTML documentation, including API docs
 # deps: ## export dependencies
 # 	poetry export --with dev -f requirements.txt -o ./docs/requirements.txt
 
+
 synclib: ## initiate automated sync dependencies
 	python synclib.py
+
 
 build: clean ## build the package
 	poetry build
 
+
 version-check: build ## build check with twine
 	poetry run twine check dist/*
+
 
 tag: ## create tags
 	@echo "Current version is $(VERSION)"
 	@echo "Creating git tag: $(TAG)"
 	git tag $(TAG)
 
+
 release: clean-test test tag ## release current version
 	@echo "Pushing tag $(TAG) to origin..."
 	git push origin $(TAG)
+
+
+patch:
+	@OLD_VER=$$(poetry version -s); \
+	poetry version patch; \
+	NEW_VER=$$(poetry version -s); \
+	perl -i -pe 's/"__version":\s*"[^"]*"/"__version": "'$$NEW_VER'"/' cookiecutter.json; \
+	git add pyproject.toml cookiecutter.json; \
+	git commit -m ":wrench: patch $$OLD_VER -> $$NEW_VER"; \
+	git tag v$$NEW_VER; \
+	git push origin main; \
+	git push origin --tags
+
+
+minor:
+	@OLD_VER=$$(poetry version -s); \
+	poetry version minor; \
+	NEW_VER=$$(poetry version -s); \
+	perl -i -pe 's/"__version":\s*"[^"]*"/"__version": "'$$NEW_VER'"/' cookiecutter.json; \
+	git add pyproject.toml cookiecutter.json; \
+	git commit -m ":wrench: minor $$OLD_VER -> $$NEW_VER"; \
+	git tag v$$NEW_VER; \
+	git push origin main; \
+	git push origin --tags
+
+
+major:
+	@OLD_VER=$$(poetry version -s); \
+	poetry version major; \
+	NEW_VER=$$(poetry version -s); \
+	perl -i -pe 's/"__version":\s*"[^"]*"/"__version": "'$$NEW_VER'"/' cookiecutter.json; \
+	git add pyproject.toml cookiecutter.json; \
+	git commit -m ":wrench: major $$OLD_VER -> $$NEW_VER"; \
+	git tag v$$NEW_VER; \
+	git push origin main; \
+	git push origin --tags
