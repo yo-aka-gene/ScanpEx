@@ -1,4 +1,4 @@
-import anndat as ad
+import anndata as ad
 import numpy as np
 
 
