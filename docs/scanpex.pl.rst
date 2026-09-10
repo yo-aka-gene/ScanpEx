@@ -1,6 +1,11 @@
 scanpex.pl package
 ==================
 
+.. automodule:: scanpex.pl
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 Subpackages
 -----------
 
@@ -9,11 +14,3 @@ Subpackages
 
    scanpex.pl.ml_evaluation
    scanpex.pl.preferences
-
-Module contents
----------------
-
-.. automodule:: scanpex.pl
-   :members:
-   :undoc-members:
-   :show-inheritance:

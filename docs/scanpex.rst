@@ -1,6 +1,11 @@
 scanpex package
 ===============
 
+.. automodule:: scanpex
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 Subpackages
 -----------
 
@@ -14,11 +19,3 @@ Subpackages
    scanpex.sns
    scanpex.sq
    scanpex.tl
-
-Module contents
----------------
-
-.. automodule:: scanpex
-   :members:
-   :undoc-members:
-   :show-inheritance:

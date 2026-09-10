@@ -1,6 +1,11 @@
 scanpex.ml package
 ==================
 
+.. automodule:: scanpex.ml
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 Subpackages
 -----------
 
@@ -8,11 +13,3 @@ Subpackages
    :maxdepth: 4
 
    scanpex.ml.lightgbm_args
-
-Module contents
----------------
-
-.. automodule:: scanpex.ml
-   :members:
-   :undoc-members:
-   :show-inheritance:
