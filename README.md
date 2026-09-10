@@ -4,7 +4,7 @@
 [<img src="https://img.shields.io/badge/GitHub-yo--aka--gene/ScanpEx-181717?style=flat&logo=github">](https://github.com/yo-aka-gene/ScanpEx)
 [![Documentation Status](https://readthedocs.org/projects/scanpex/badge/?version=latest)](https://scanpex.readthedocs.io/en/latest/?badge=latest)
 [<img src="https://img.shields.io/badge/Documentation-scanpex.rtfd.io-8CA1AF?style=flat&logo=readthedocs">](https://scanpex.readthedocs.io/en/latest/)
-<img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat&logo=python">
+<img src="https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat&logo=python">
 [![PyPi](https://img.shields.io/pypi/v/scanpex?logo=pypi&label=PyPI&color=3775A9)](https://pypi.org/project/scanpex)
 
 - ScanPy Extension and kwarg Preferences
