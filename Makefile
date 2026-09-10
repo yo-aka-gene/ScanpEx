@@ -61,10 +61,8 @@ help:
 
 
 docs: ## generate Sphinx HTML documentation, including API docs
-	rm -f docs/modules.rst
+	rm -f docs/modules.rst docs/scanpex*.rst
 	poetry run sphinx-apidoc \
-		--force \
-		--remove-old \
 		--implicit-namespaces \
 		--module-first \
 		-o docs/ src/scanpex
