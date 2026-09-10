@@ -1,5 +1,12 @@
-.PHONY: clean clean-build clean-pyc clean-test test help docs build version-check tag release patch minor major
+.PHONY: \
+	clean clean-build clean-pyc clean-test \
+	test help docs build version-check \
+	tag release publish \
+	patch minor major _bump-release
+
+
 .DEFAULT_GOAL := help
+
 
 define BROWSER_PYSCRIPT
 import os, webbrowser, sys
@@ -9,6 +16,7 @@ from urllib.request import pathname2url
 webbrowser.open("file://" + pathname2url(os.path.abspath(sys.argv[1])))
 endef
 export BROWSER_PYSCRIPT
+
 
 define PRINT_HELP_PYSCRIPT
 import re, sys
@@ -20,6 +28,7 @@ for line in sys.stdin:
 		print("%-20s %s" % (target, help))
 endef
 export PRINT_HELP_PYSCRIPT
+
 
 BROWSER := python -c "$$BROWSER_PYSCRIPT"
 
@@ -46,7 +55,6 @@ clean-pyc: ## remove Python file artifacts
 
 
 clean-test: ## remove test and coverage artifacts
-# 	rm -fr .tox/
 	rm -f .coverage
 	rm -fr htmlcov/
 	rm -fr .pytest_cache
@@ -70,9 +78,6 @@ docs: ## generate Sphinx HTML documentation, including API docs
 	poetry run $(MAKE) -C docs html
 	$(BROWSER) docs/_build/html/index.html
 
-# deps: ## export dependencies
-# 	poetry export --with dev -f requirements.txt -o ./docs/requirements.txt
-
 
 synclib: ## initiate automated sync dependencies
 	python synclib.py
@@ -82,52 +87,71 @@ build: clean ## build the package
 	poetry build
 
 
-version-check: build ## build check with twine
+version-check: build ## build and validate distribution artifacts
 	poetry run twine check dist/*
 
 
-tag: ## create tags
-	@echo "Current version is $(VERSION)"
-	@echo "Creating git tag: $(TAG)"
-	git tag $(TAG)
+patch: ## bump patch version, validate, commit, tag, and push
+	@$(MAKE) _bump-release LEVEL=patch
 
 
-release: clean-test test tag ## release current version
-	@echo "Pushing tag $(TAG) to origin..."
-	git push origin $(TAG)
+minor: ## bump minor version, validate, commit, tag, and push
+	@$(MAKE) _bump-release LEVEL=minor
 
 
-patch:
-	@OLD_VER=$$(poetry version -s); \
-	poetry version patch; \
+major: ## bump major version, validate, commit, tag, and push
+	@$(MAKE) _bump-release LEVEL=major
+
+
+_bump-release:
+	@set -e; \
+	\
+	if [ -n "$$(git status --porcelain)" ]; then \
+		echo "ERROR: working tree is not clean."; \
+		echo "Commit or stash changes before releasing."; \
+		exit 1; \
+	fi; \
+	\
+	OLD_VER=$$(poetry version -s); \
+	echo "Current version: $$OLD_VER"; \
+	\
+	poetry version $(LEVEL); \
 	NEW_VER=$$(poetry version -s); \
-	perl -i -pe 's/"__version":\s*"[^"]*"/"__version": "'$$NEW_VER'"/' cookiecutter.json; \
-	git add pyproject.toml cookiecutter.json; \
-	git commit -m ":wrench: patch $$OLD_VER -> $$NEW_VER"; \
-	git tag v$$NEW_VER; \
+	echo "New version: $$NEW_VER"; \
+	\
+	perl -i -pe \
+		's/"__version":\s*"[^"]*"/"__version": "'$$NEW_VER'"/' \
+		cookiecutter.json; \
+	\
+	echo "Synchronizing lock file..."; \
+	poetry lock; \
+	\
+	echo "Checking Poetry configuration..."; \
+	poetry check --lock; \
+	\
+	echo "Running tests..."; \
+	$(MAKE) test; \
+	\
+	echo "Building and validating distribution..."; \
+	$(MAKE) version-check; \
+	\
+	echo "Committing version bump..."; \
+	git add pyproject.toml poetry.lock cookiecutter.json; \
+	git commit -m ":wrench: $(LEVEL) $$OLD_VER -> $$NEW_VER"; \
+	\
+	echo "Creating tag v$$NEW_VER..."; \
+	git tag -a v$$NEW_VER -m "v$$NEW_VER"; \
+	\
+	echo "Pushing main and tag..."; \
 	git push origin main; \
-	git push origin --tags
+	git push origin v$$NEW_VER; \
+	\
+	echo "Release preparation completed: v$$NEW_VER"
 
 
-minor:
-	@OLD_VER=$$(poetry version -s); \
-	poetry version minor; \
-	NEW_VER=$$(poetry version -s); \
-	perl -i -pe 's/"__version":\s*"[^"]*"/"__version": "'$$NEW_VER'"/' cookiecutter.json; \
-	git add pyproject.toml cookiecutter.json; \
-	git commit -m ":wrench: minor $$OLD_VER -> $$NEW_VER"; \
-	git tag v$$NEW_VER; \
-	git push origin main; \
-	git push origin --tags
+publish: ## publish the current built distribution to PyPI
+	@echo "Publishing version $$(poetry version -s) to PyPI..."
+	poetry publish
 
 
-major:
-	@OLD_VER=$$(poetry version -s); \
-	poetry version major; \
-	NEW_VER=$$(poetry version -s); \
-	perl -i -pe 's/"__version":\s*"[^"]*"/"__version": "'$$NEW_VER'"/' cookiecutter.json; \
-	git add pyproject.toml cookiecutter.json; \
-	git commit -m ":wrench: major $$OLD_VER -> $$NEW_VER"; \
-	git tag v$$NEW_VER; \
-	git push origin main; \
-	git push origin --tags
+release: publish ## alias for publishing the validated distribution
