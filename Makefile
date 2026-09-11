@@ -1,4 +1,4 @@
-.PHONY: clean clean-build clean-pyc clean-test test help docs build version-check patch minor major publish
+.PHONY: clean clean-build clean-pyc clean-test test help docs build version-check patch minor major publish deps-check
 .DEFAULT_GOAL := help
 
 
@@ -122,3 +122,8 @@ major: ## bump major version, commit, tag, and push
 
 publish: version-check ## build, validate, and publish current version to PyPI
 	poetry publish
+
+
+deps-check: ## show outdated dependencies and preview dependency updates
+	poetry show --outdated
+	poetry update --dry-run
