@@ -110,14 +110,8 @@ def lollipop(
     scatter_kws.update(marker_kws)
     scatter_kws.setdefault("linewidth", 0)
 
-    x_is_numeric = (
-        x is not None
-        and pd.api.types.is_numeric_dtype(data.loc[:, x])
-    )
-    y_is_numeric = (
-        y is not None
-        and pd.api.types.is_numeric_dtype(data.loc[:, y])
-    )
+    x_is_numeric = x is not None and pd.api.types.is_numeric_dtype(data.loc[:, x])
+    y_is_numeric = y is not None and pd.api.types.is_numeric_dtype(data.loc[:, y])
 
     if x_is_numeric:
         horizontal = True
@@ -128,9 +122,7 @@ def lollipop(
         values = data.loc[:, y]
         axis_lim = lim if lim is not None else ax.get_ylim()
     else:
-        raise ValueError(
-            "Either `x` or `y` must refer to a numeric column."
-        )
+        raise ValueError("Either `x` or `y` must refer to a numeric column.")
 
     # Construct colors for the stem layer.
     scatter_palette = palette
@@ -147,10 +139,7 @@ def lollipop(
             )
             hue_palette = dict(zip(hue_levels, colors))
 
-        stem_colors = [
-            hue_palette[value]
-            for value in data.loc[:, hue]
-        ]
+        stem_colors = [hue_palette[value] for value in data.loc[:, hue]]
         scatter_palette = hue_palette
 
     else:
@@ -166,9 +155,7 @@ def lollipop(
             )
 
     # Draw stems.
-    for i, (value, color) in enumerate(
-        zip(values, stem_colors)
-    ):
+    for i, (value, color) in enumerate(zip(values, stem_colors)):
         line_kws = dict(stem_kws)
         line_kws.setdefault("color", color)
 
@@ -223,4 +210,3 @@ def lollipop(
     )
 
     return ax
-    

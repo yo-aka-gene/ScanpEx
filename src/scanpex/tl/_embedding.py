@@ -81,9 +81,7 @@ def transfer_embedding_info(
     adata_return.obsm["X_umap"] = adata_source.obsm["X_umap"].copy()
 
     if "neighbors" in adata_source.uns:
-        adata_return.uns["neighbors"] = copy.deepcopy(
-            adata_source.uns["neighbors"]
-        )
+        adata_return.uns["neighbors"] = copy.deepcopy(adata_source.uns["neighbors"])
 
     for key, value in adata_source.obsp.items():
         adata_return.obsp[key] = value.copy()
@@ -159,9 +157,7 @@ def transfer_clustering_info(
     if isinstance(obs_keys, str):
         obs_keys = [obs_keys]
 
-    missing_keys = [
-        key for key in obs_keys if key not in adata_source.obs.columns
-    ]
+    missing_keys = [key for key in obs_keys if key not in adata_source.obs.columns]
     if missing_keys:
         raise KeyError(
             f"The following keys are not present in `adata_source.obs`: "

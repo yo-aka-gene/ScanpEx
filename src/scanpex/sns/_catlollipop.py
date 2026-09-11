@@ -115,14 +115,8 @@ def catlollipop(
     scatter_kws.update(marker_kws)
     scatter_kws.setdefault("linewidth", 0)
 
-    x_is_numeric = (
-        x is not None
-        and pd.api.types.is_numeric_dtype(data.loc[:, x])
-    )
-    y_is_numeric = (
-        y is not None
-        and pd.api.types.is_numeric_dtype(data.loc[:, y])
-    )
+    x_is_numeric = x is not None and pd.api.types.is_numeric_dtype(data.loc[:, x])
+    y_is_numeric = y is not None and pd.api.types.is_numeric_dtype(data.loc[:, y])
 
     if x_is_numeric and not y_is_numeric:
         horizontal = True
@@ -133,27 +127,20 @@ def catlollipop(
         numeric = y
         category = x
     else:
-        raise ValueError(
-            "Exactly one of `x` and `y` must refer to a numeric column."
-        )
+        raise ValueError("Exactly one of `x` and `y` must refer to a numeric column.")
 
     plot_data = data.copy()
 
     # Map each category to a fixed base position.
     categories = list(pd.unique(plot_data.loc[:, category]))
-    category_positions = {
-        value: -i
-        for i, value in enumerate(categories)
-    }
+    category_positions = {value: -i for i, value in enumerate(categories)}
 
     loc_col = "__scanpex_loc__"
     while loc_col in plot_data.columns:
         loc_col = f"_{loc_col}"
 
     plot_data.loc[:, loc_col] = (
-        plot_data.loc[:, category]
-        .map(category_positions)
-        .astype(float)
+        plot_data.loc[:, category].map(category_positions).astype(float)
     )
 
     # Construct hue-specific dodge offsets and colors.
@@ -171,27 +158,17 @@ def catlollipop(
         hue_offsets = dict(zip(hue_levels, offsets))
 
         plot_data.loc[:, loc_col] += (
-            plot_data.loc[:, hue]
-            .map(hue_offsets)
-            .astype(float)
+            plot_data.loc[:, hue].map(hue_offsets).astype(float)
         )
 
         if isinstance(palette, dict):
-            missing = [
-                level
-                for level in hue_levels
-                if level not in palette
-            ]
+            missing = [level for level in hue_levels if level not in palette]
             if missing:
                 raise ValueError(
-                    "`palette` does not define colors for all hue levels: "
-                    f"{missing}"
+                    "`palette` does not define colors for all hue levels: " f"{missing}"
                 )
 
-            hue_palette = {
-                level: palette[level]
-                for level in hue_levels
-            }
+            hue_palette = {level: palette[level] for level in hue_levels}
 
         else:
             colors = sns.color_palette(
@@ -240,9 +217,7 @@ def catlollipop(
         scatter_kws.pop("markers", None)
 
     scatter_args = (
-        {"x": numeric, "y": loc_col}
-        if horizontal
-        else {"x": loc_col, "y": numeric}
+        {"x": numeric, "y": loc_col} if horizontal else {"x": loc_col, "y": numeric}
     )
 
     # Draw markers first so that the numeric axis limits are established.
@@ -253,18 +228,10 @@ def catlollipop(
         **scatter_kws,
     )
 
-    numeric_lim = (
-        ax.get_xlim()
-        if horizontal
-        else ax.get_ylim()
-    )
+    numeric_lim = ax.get_xlim() if horizontal else ax.get_ylim()
 
     # Draw stems using the same hue-color mapping as the markers.
-    line_func = (
-        ax.hlines
-        if horizontal
-        else ax.vlines
-    )
+    line_func = ax.hlines if horizontal else ax.vlines
 
     for _, row in plot_data.iterrows():
         line_kws = dict(stem_kws)
