@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "scanpex"
-version = "0.3.8"
+version = "0.3.9"
 description = "ScanPy Extension and kwarg Preferences"
 authors = ["yo-aka-gene <yujiokano@keio.jp>"]
 readme = "README.md"
@@ -11,7 +11,7 @@ numba = ">=0.60.0"
 matplotlib = "^3.10.8"
 pandas = ">=1.5.3"
 scanpy = ">=1.11.5,<2.0.0"
-anndata = ">=0.12.7,<0.13.0"
+anndata = ">=0.12.7,<0.14.0"
 scipy = ">=1.16,<1.18"
 mygene = "^3.2.2"
 scikit-learn = "<1.8"
