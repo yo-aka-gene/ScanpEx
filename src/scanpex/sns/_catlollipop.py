@@ -1,10 +1,10 @@
 from typing import Any
 
 import matplotlib.pyplot as plt
-from matplotlib.axes import Axes
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from matplotlib.axes import Axes
 
 
 def catlollipop(
