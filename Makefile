@@ -1,4 +1,4 @@
-.PHONY: clean clean-build clean-pyc clean-test test help docs build version-check tag release patch minor major
+.PHONY: clean clean-build clean-pyc clean-test test help docs build version-check patch minor major publish
 .DEFAULT_GOAL := help
 
 
@@ -25,9 +25,6 @@ export PRINT_HELP_PYSCRIPT
 
 
 BROWSER := python -c "$$BROWSER_PYSCRIPT"
-
-VERSION := $(shell poetry version -s)
-TAG := v$(VERSION)
 
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
@@ -90,17 +87,6 @@ version-check: build ## build check with twine
 	poetry run twine check dist/*
 
 
-tag: ## create tag for the current version
-	@echo "Current version is $(VERSION)"
-	@echo "Creating git tag: $(TAG)"
-	git tag $(TAG)
-
-
-release: clean-test test tag ## release current version
-	@echo "Pushing tag $(TAG) to origin..."
-	git push origin $(TAG)
-
-
 patch: ## bump patch version, commit, tag, and push
 	@OLD_VER=$$(poetry version -s); \
 	poetry version patch; \
@@ -132,3 +118,7 @@ major: ## bump major version, commit, tag, and push
 	git tag v$$NEW_VER; \
 	git push origin main; \
 	git push origin v$$NEW_VER
+
+
+publish: version-check ## build, validate, and publish current version to PyPI
+	poetry publish
