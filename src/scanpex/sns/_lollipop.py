@@ -53,7 +53,8 @@ def lollipop(
     palette : str, sequence, dict, or seaborn palette, optional
         Color palette used for the plot. When `hue` is specified, the palette
         defines the mapping from hue levels to colors and is shared by the
-        markers and stems. Without `hue`, the palette is used to color stems.
+        markers and stems. Without `hue`, colors are assigned to individual
+        observations and shared by their markers and stems.
     ax : matplotlib.axes.Axes, optional
         Pre-existing Axes on which to draw the plot. If None, a new figure and
         Axes are created.
@@ -98,6 +99,9 @@ def lollipop(
 
     When `hue` is specified, a common categorical color mapping is constructed
     and used for both the markers and their corresponding stems.
+
+    When `hue` is not specified, colors are assigned observation-wise and the
+    same colors are applied to both markers and stems.
     """
     if ax is None:
         _, ax = plt.subplots()
@@ -124,7 +128,7 @@ def lollipop(
     else:
         raise ValueError("Either `x` or `y` must refer to a numeric column.")
 
-    # Construct colors for the stem layer.
+    # Construct colors shared by the marker and stem layers.
     scatter_palette = palette
 
     if hue is not None:
@@ -201,6 +205,8 @@ def lollipop(
     else:
         scatter_kws.pop("markers", None)
 
+    n_collections_before = len(ax.collections)
+
     sns.scatterplot(
         data=data,
         x=x,
@@ -208,5 +214,11 @@ def lollipop(
         ax=ax,
         **scatter_kws,
     )
+
+    # Without hue, seaborn assigns a single default marker color.
+    # Replace it with the same observation-wise colors used for the stems.
+    if hue is None:
+        marker_collection = ax.collections[n_collections_before]
+        marker_collection.set_facecolors(stem_colors)
 
     return ax
