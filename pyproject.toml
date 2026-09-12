@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "scanpex"
-version = "0.3.11"
+version = "0.3.12"
 description = "ScanPy Extension and kwarg Preferences"
 authors = ["yo-aka-gene <yujiokano@keio.jp>"]
 readme = "README.md"
